@@ -1,0 +1,22 @@
+[Unit]
+Description=openp2p platform (handshake-only: rooms, forwards, web entry)
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/lib/o2p-platform
+# O2P_TOKEN and any other secret live in this file (chmod 600), never in the unit:
+#   O2P_TOKEN=<your openp2p int64 token>
+EnvironmentFile=/etc/o2p-platform/env
+Environment=O2P_DST_PORT=3000
+Environment=O2P_SHARE_BW=0
+Environment=ROOM_BASE_DOMAIN=example.org
+Environment=ROOM_APEX_HOST=p2p.example.org
+Environment=PORT=8081
+ExecStart=/usr/bin/node /usr/local/sbin/o2p-platform.mjs
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
